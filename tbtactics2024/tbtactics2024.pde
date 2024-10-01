@@ -1,4 +1,12 @@
 // tb tactics 2024
+// by Nikola Pavkovic
+// 2024-10-01 
+
+// core functions
+
+// global variables
+int gridSize = 15;
+int gridCell = 40;
 
 void setup() {
   size(1200, 900);
@@ -7,14 +15,13 @@ void setup() {
 
 void draw() {
   background(250);
-  grid();
+  grid(gridSize, gridCell);
 }
 
-// draws grid
-void grid() {
+// graphics
+
+void grid(int len, int cel) {
   // produces a centered square grid with side length len, cell length cel
-  int len = 15;
-  int cel = 40;
   // centers the grid on the screen
   int xct = (width/2)-(len*cel)/2;
   int yct = (height/2)-(len*cel)/2;
