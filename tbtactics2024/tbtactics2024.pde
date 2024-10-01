@@ -2,12 +2,12 @@
 // by Nikola Pavkovic
 // 2024-10-01 
 
-// core functions
 
 // global variables
 int gridSize = 15;
 int gridCell = 40;
 
+// core functions
 void setup() {
   size(1200, 900);
   background(250);
@@ -18,8 +18,11 @@ void draw() {
   grid(gridSize, gridCell);
 }
 
-// graphics
+void mousePressed () {
+  println(onGrid(gridSize,gridCell));
+}
 
+// graphics
 void grid(int len, int cel) {
   // produces a centered square grid with side length len, cell length cel
   // centers the grid on the screen
@@ -31,4 +34,12 @@ void grid(int len, int cel) {
     line(i*cel+xct,yct,i*cel+xct,(len-1)*cel+yct);
     line(xct,i*cel+yct,(len-1)*cel+xct,i*cel+yct);
   }
+}
+
+boolean onGrid(int len, int cel) {
+  // checks if the mouse is over the grid
+  if (mouseX > (width/2)-(len*cel)/2 && mouseX < (width/2)+(len*cel)/2 && mouseY > (height/2)-(len*cel)/2 && mouseY < (height/2)+(len*cel)/2) {
+    return true;
+  }
+  return false;
 }
