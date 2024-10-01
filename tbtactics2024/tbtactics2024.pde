@@ -12,14 +12,16 @@ void draw() {
 
 // draws grid
 void grid() {
-  //produces a square grid with side length len, cell length cel and offset off
+  // produces a centered square grid with side length len, cell length cel
   int len = 15;
-  int cel = 30;
-  int off = 25;
+  int cel = 40;
+  // centers the grid on the screen
+  int xct = (width/2)-(len*cel)/2;
+  int yct = (height/2)-(len*cel)/2;
   stroke(175);
   strokeWeight(2);
   for(int i = 0; i < len; i++) {
-    line(i*cel+off,off,i*cel+off,(len-1)*cel+off);
-    line(off,i*cel+off,(len-1)*cel+off,i*cel+off);
+    line(i*cel+xct,yct,i*cel+xct,(len-1)*cel+yct);
+    line(xct,i*cel+yct,(len-1)*cel+xct,i*cel+yct);
   }
 }
