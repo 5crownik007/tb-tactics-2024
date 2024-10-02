@@ -4,9 +4,8 @@
 
 
 // global variables
-int gridSize = 15;
+int gridSize = 10;
 int gridCell = 40;
-
 // core functions
 void setup() {
   size(1200, 900);
@@ -15,30 +14,36 @@ void setup() {
 
 void draw() {
   background(250);
-  grid(gridSize, gridCell);
+  grid(width/2, height/2, gridSize, gridCell);
 }
 
 void mousePressed () {
-  println(onGrid(gridSize,gridCell));
+  println(inArea(findCorners(width/2,height/2,gridSize,gridCell)));
 }
 
 // graphics
-void grid(int len, int cel) {
-  // produces a centered square grid with side length len, cell length cel
+void grid(int x, int y, int len, int cel) {
+  // produces a square grid centered on x and y with side length len, cell length cel
   // centers the grid on the screen
-  int xct = (width/2)-(len*cel)/2;
-  int yct = (height/2)-(len*cel)/2;
+  int xct = x-(len*cel)/2;
+  int yct = y-(len*cel)/2;
   stroke(175);
   strokeWeight(2);
-  for(int i = 0; i < len; i++) {
-    line(i*cel+xct,yct,i*cel+xct,(len-1)*cel+yct);
-    line(xct,i*cel+yct,(len-1)*cel+xct,i*cel+yct);
+  for(int i = 0; i < len +1; i++) {
+    line(i*cel+xct,yct,i*cel+xct,len*cel+yct);
+    line(xct,i*cel+yct,len*cel+xct,i*cel+yct);
   }
 }
 
-boolean onGrid(int len, int cel) {
-  // checks if the mouse is over the grid
-  if (mouseX > (width/2)-(len*cel)/2 && mouseX < (width/2)+(len*cel)/2 && mouseY > (height/2)-(len*cel)/2 && mouseY < (height/2)+(len*cel)/2) {
+int[] findCorners(int x, int y, int len, int cel) {
+  // returns the top left and bottom right corners of a grid described with x, y center, length in cells and length of cells
+  int [] corners = {x-(len*cel)/2, y-(len*cel)/2, x+(len*cel)/2, y+(len*cel)/2}; 
+  return corners;
+}
+
+boolean inArea(int[] corners) {
+  // checks if the mouse is in a rectangular area defined with corners x1, y1, x2, y2
+  if (mouseX > corners[0] && mouseY > corners[1] && mouseX < corners[2] && mouseY < corners[3]) {
     return true;
   }
   return false;
