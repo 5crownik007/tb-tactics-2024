@@ -6,6 +6,7 @@
 // global variables
 int gridSize = 10;
 int gridCell = 40;
+
 // core functions
 void setup() {
   size(1200, 900);
@@ -18,10 +19,10 @@ void draw() {
 }
 
 void mousePressed () {
-  println(inArea(findCorners(width/2,height/2,gridSize,gridCell)));
+  println(gridCell(mouseX,mouseY,width/2,height/2,gridSize,gridCell));
 }
 
-// graphics
+// functions
 void grid(int x, int y, int len, int cel) {
   // produces a square grid centered on x and y with side length len, cell length cel
   // centers the grid on the screen
@@ -47,4 +48,18 @@ boolean inArea(int[] corners) {
     return true;
   }
   return false;
+}
+
+int[] gridCell(int x, int y, int gx, int gy, int len, int cel) {
+  // returns the grid coordinates and center of the cell on a grid under the x y coords. returns null otherwise
+  int [] corners = findCorners(gx,gy,len,cel);
+  if (inArea(corners)){
+    int[] cell = new int[4];
+    cell[0] = (x-corners[0])/cel;
+    cell[1] = (y-corners[1])/cel;
+    cell[2] = corners[0]+(cell[0]*cel)+cel/2;
+    cell[3] = corners[1]+(cell[1]*cel)+cel/2;
+    return cell;
+  }
+  return null;
 }
