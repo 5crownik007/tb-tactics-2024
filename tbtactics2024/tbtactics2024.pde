@@ -6,6 +6,7 @@
 // global variables
 int gridSize = 10;
 int gridCell = 40;
+int time = 0;
 boolean grid [][] = new boolean [gridSize][gridSize];
 
 // core functions
@@ -24,6 +25,10 @@ void draw() {
       }
     }
   }
+  if (time % 5 == 0) {
+    gravity();
+  }
+  time++;
 }
 
 void mousePressed () {
@@ -98,4 +103,21 @@ void fillCell(int cx, int cy, int gx, int gy, int len, int cel) {
   rectMode(CENTER);
   fill(0);
   square(cell[0],cell[1],cel);
+}
+
+void gravity() {
+  for (int i = 0; i < gridSize; i++) {
+    for (int k = gridSize-2; k >= 0; k--) {
+      if (grid[i][k] && !grid[i][k+1]) {
+        grid[i][k] = !grid[i][k];
+        grid[i][k+1] = !grid[i][k+1];
+      } else if (grid[i][k] && i > 0 && !grid[i-1][k+1]) {
+        grid[i][k] = !grid[i][k];
+        grid[i-1][k+1] = !grid[i-1][k+1];
+      } else if (grid[i][k] && i < gridSize-1 && !grid[i+1][k+1]) {
+        grid[i][k] = !grid[i][k];
+        grid[i+1][k+1] = !grid[i+1][k+1];
+      }
+    }
+  }
 }
