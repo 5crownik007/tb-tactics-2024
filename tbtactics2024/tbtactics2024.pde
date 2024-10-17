@@ -17,10 +17,19 @@ void setup() {
 void draw() {
   background(250);
   grid(width/2, height/2, gridSize, gridCell);
+  for (int i = 0; i < gridSize; i++) {
+    for (int k = 0; k < gridSize; k++) {
+      if (grid[i][k]) {
+        fillCell(i,k,width/2,height/2,gridSize,gridCell);
+      }
+    }
+  }
 }
 
 void mousePressed () {
-  fillCell(mouseX,mouseY,width/2,height/2,gridSize,gridCell);
+  if(inArea(findCorners(width/2,height/2,gridSize,gridCell))){
+    markCell(width/2,height/2,gridSize,gridCell);
+  }
 }
 
 // functions
@@ -51,13 +60,13 @@ boolean inArea(int[] corners) {
   return false;
 }
 
-int[] gridCell(int x, int y, int gx, int gy, int len, int cel) {
-  // returns the grid coordinates and center of the cell on a grid under the x y coords. returns null otherwise
+int[] mouseCell(int gx, int gy, int len, int cel) {
+  // returns the grid coordinates and center of the cell on a grid under the mouse x y coords. returns null otherwise
   int [] corners = findCorners(gx,gy,len,cel);
   if (inArea(corners)){
     int[] cell = new int[4];
-    cell[0] = (x-corners[0])/cel;
-    cell[1] = (y-corners[1])/cel;
+    cell[0] = (mouseX-corners[0])/cel;
+    cell[1] = (mouseY-corners[1])/cel;
     cell[2] = corners[0]+(cell[0]*cel)+cel/2;
     cell[3] = corners[1]+(cell[1]*cel)+cel/2;
     return cell;
@@ -65,10 +74,28 @@ int[] gridCell(int x, int y, int gx, int gy, int len, int cel) {
   return null;
 }
 
-void fillCell(int x, int y, int gx, int gy, int len, int cel) {
-  // fills a cell at the given x y coordinates.
-  int cell[] = gridCell(x,y,gx,gy,len,cel);
+int[] findCell(int cx, int cy, int gx, int gy, int len, int cel) {
+  // returns the center of the cell at the given grid coordinates. returns null if out of range
+  int [] corners = findCorners(gx,gy,len,cel);
+  if (cx <= gridSize-1 || cy <= gridSize-1){
+    int[] cell = new int[2];
+    cell[0] = corners[0]+(cx*cel)+cel/2;
+    cell[1] = corners[1]+(cy*cel)+cel/2;
+    return cell;
+  }
+  return null;
+}
+
+void markCell(int gx, int gy, int len, int cel) {
+  // marks the cell under the mouse
+  int cell[] = mouseCell(gx,gy,len,cel);
+  grid[cell[0]][cell[1]] = !grid[cell[0]][cell[1]];
+}
+
+void fillCell(int cx, int cy, int gx, int gy, int len, int cel) {
+  // fills a cell at the given grid coordinates.
+  int cell[] = findCell(cx,cy,gx,gy,len,cel);
   rectMode(CENTER);
   fill(0);
-  square(cell[2],cell[3],cel);
+  square(cell[0],cell[1],cel);
 }
