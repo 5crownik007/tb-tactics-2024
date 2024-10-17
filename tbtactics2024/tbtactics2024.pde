@@ -6,6 +6,7 @@
 // global variables
 int gridSize = 10;
 int gridCell = 40;
+boolean grid [][] = new boolean [gridSize][gridSize];
 
 // core functions
 void setup() {
@@ -19,7 +20,7 @@ void draw() {
 }
 
 void mousePressed () {
-  println(gridCell(mouseX,mouseY,width/2,height/2,gridSize,gridCell));
+  fillCell(mouseX,mouseY,width/2,height/2,gridSize,gridCell);
 }
 
 // functions
@@ -62,4 +63,12 @@ int[] gridCell(int x, int y, int gx, int gy, int len, int cel) {
     return cell;
   }
   return null;
+}
+
+void fillCell(int x, int y, int gx, int gy, int len, int cel) {
+  // fills a cell at the given x y coordinates.
+  int cell[] = gridCell(x,y,gx,gy,len,cel);
+  rectMode(CENTER);
+  fill(0);
+  square(cell[2],cell[3],cel);
 }
