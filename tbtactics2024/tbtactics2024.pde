@@ -7,7 +7,8 @@
 int gridSize = 10;
 int gridCell = 40;
 int time = 0;
-boolean grid [][] = new boolean [gridSize][gridSize];
+int grid [][] = new int [gridSize][gridSize];
+int id = 0;
 
 // core functions
 void setup() {
@@ -20,7 +21,7 @@ void draw() {
   grid(width/2, height/2, gridSize, gridCell);
   for (int i = 0; i < gridSize; i++) {
     for (int k = 0; k < gridSize; k++) {
-      if (grid[i][k]) {
+      if (grid[i][k] > 0) {
         fillCell(i,k,width/2,height/2,gridSize,gridCell);
       }
     }
@@ -94,29 +95,40 @@ int[] findCell(int cx, int cy, int gx, int gy, int len, int cel) {
 void markCell(int gx, int gy, int len, int cel) {
   // marks the cell under the mouse
   int cell[] = mouseCell(gx,gy,len,cel);
-  grid[cell[0]][cell[1]] = !grid[cell[0]][cell[1]];
+  if (grid[cell[0]][cell[1]] > 0 ) {
+    grid[cell[0]][cell[1]] = 0;
+  } else {
+    grid[cell[0]][cell[1]] = id;
+    id ++;
+  }
 }
 
 void fillCell(int cx, int cy, int gx, int gy, int len, int cel) {
   // fills a cell at the given grid coordinates.
   int cell[] = findCell(cx,cy,gx,gy,len,cel);
-  rectMode(CENTER);
+  //rectMode(CENTER);
+  //fill(0);
+  //square(cell[0],cell[1],cel);
+  textAlign(CENTER);
+  textSize(32);
   fill(0);
-  square(cell[0],cell[1],cel);
+  text(grid[cx][cy],cell[0],cell[1]+10);
 }
 
 void gravity() {
   for (int i = 0; i < gridSize; i++) {
     for (int k = gridSize-2; k >= 0; k--) {
-      if (grid[i][k] && !grid[i][k+1]) {
-        grid[i][k] = !grid[i][k];
-        grid[i][k+1] = !grid[i][k+1];
-      } else if (grid[i][k] && i > 0 && !grid[i-1][k+1]) {
-        grid[i][k] = !grid[i][k];
-        grid[i-1][k+1] = !grid[i-1][k+1];
-      } else if (grid[i][k] && i < gridSize-1 && !grid[i+1][k+1]) {
-        grid[i][k] = !grid[i][k];
-        grid[i+1][k+1] = !grid[i+1][k+1];
+      if (grid[i][k] > 0) {
+        if (grid[i][k+1] == 0) {
+          grid[i][k+1] = grid[i][k];
+          grid[i][k] = 0;
+        } else if (i > 0 && grid[i-1][k+1] == 0) {
+          grid[i-1][k+1] = grid[i][k];
+          grid[i][k] = 0;
+        } else if (i < gridSize-1 && grid[i+1][k+1] == 0) {
+          grid[i+1][k+1] = grid[i][k];
+          grid[i][k] = 0;
+        }
       }
     }
   }
